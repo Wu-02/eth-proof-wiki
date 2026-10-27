@@ -30,7 +30,7 @@
   function closeMenu(){if(document.querySelector('#sidebar')?.contains(document.activeElement))menu?.focus();document.body.classList.remove('menu-open');menu?.setAttribute('aria-expanded','false');}
   menu?.addEventListener('click',()=>{const open=document.body.classList.toggle('menu-open');menu.setAttribute('aria-expanded',String(open));});
   document.querySelector('#main')?.addEventListener('click',closeMenu);
-  document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMenu();});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'){if(dialog?.open){e.preventDefault();dialog.close();}closeMenu();}});
   window.addEventListener('pageshow',closeMenu);
   const select=document.querySelector('#graph-select');
   function highlight(){const id=select?.value;const nodes=[...document.querySelectorAll('.graph-node')],chosen=nodes.find(n=>n.dataset.node===id);const related=new Set(id?[id,...(chosen?.dataset.deps||'').split(' ')]:[]);nodes.filter(n=>n.dataset.deps.split(' ').includes(id)).forEach(n=>related.add(n.dataset.node));for(const node of nodes){node.classList.toggle('is-selected',!!id&&node.dataset.node===id);node.classList.toggle('is-related',!!id&&related.has(node.dataset.node));node.classList.toggle('is-dimmed',!!id&&!related.has(node.dataset.node));}}

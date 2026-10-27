@@ -27,7 +27,7 @@ test('full builds exclude unpublished/private source and produce both base paths
   const fs=await import('node:fs/promises');const path=await import('node:path');const os=await import('node:os');const {build,ROOT}=await import('../scripts/build.mjs');
   const root=await fs.mkdtemp(path.join(os.tmpdir(),'proof-wiki-test-'));
   try {
-    await fs.mkdir(path.join(root,'vault/private'),{recursive:true});await fs.mkdir(path.join(root,'vault/.obsidian'),{recursive:true});await fs.mkdir(path.join(root,'web'));
+    await fs.mkdir(path.join(root,'vault/private'),{recursive:true});await fs.mkdir(path.join(root,'vault/.obsidian'),{recursive:true});await fs.mkdir(path.join(root,'web'));await fs.mkdir(path.join(root,'licenses'));await fs.copyFile(path.join(ROOT,'licenses/OpenAI-math-Apache-2.0.txt'),path.join(root,'licenses/OpenAI-math-Apache-2.0.txt'));
     await fs.symlink(path.join(ROOT,'node_modules'),path.join(root,'node_modules'),'dir');
     for(const file of ['style.css','app.js','icon.svg'])await fs.copyFile(path.join(ROOT,'web',file),path.join(root,'web',file));
     await fs.writeFile(path.join(root,'site.config.json'),JSON.stringify({title:'Test',basePath:'/wiki/'}));

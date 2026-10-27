@@ -39,10 +39,12 @@ with sync_playwright() as p:
     page.locator("#search-input").fill("not-a-real-proof-node-987654321")
     page.wait_for_function("document.querySelector('#search-status').textContent.includes('没有匹配')")
     page.keyboard.press("Escape")
+    page.locator("#search-dialog").wait_for(state="hidden")
     assert not page.locator("#search-dialog").is_visible()
     page.keyboard.press("/")
     assert page.locator("#search-dialog").is_visible()
     page.get_by_role("button", name="关闭搜索").click()
+    page.locator("#search-dialog").wait_for(state="hidden")
     assert not page.locator("#search-dialog").is_visible()
     page.goto(BASE + "dependency-graph/", wait_until="networkidle")
     assert page.locator(".diagram-scroll .node a").count() == 33
