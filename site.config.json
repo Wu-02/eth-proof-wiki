@@ -1,5 +1,12 @@
 {
   "title": "ETH 证明图谱",
   "basePath": "/eth-proof-wiki/",
-  "url": "https://wu-02.github.io/eth-proof-wiki/"
+  "url": "https://wu-02.github.io/eth-proof-wiki/",
+  "topicIds": [
+    "route-a",
+    "shared-algebra",
+    "shared-sat",
+    "route-b",
+    "outputs"
+  ]
 }

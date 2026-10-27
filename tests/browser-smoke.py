@@ -24,6 +24,7 @@ with sync_playwright() as p:
         response = page.goto(url, wait_until="load")
         assert response.status == 200, url
         assert page.locator("h1").count() == 1, url
+        assert page.locator("#sidebar .topic-nav").count() == 5, url
         assert page.locator(".katex-error").count() == 0, url
         assert not page.evaluate("document.documentElement.scrollWidth > window.innerWidth"), url
     page.goto(BASE, wait_until="networkidle")

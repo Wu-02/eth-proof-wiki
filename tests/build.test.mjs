@@ -60,3 +60,11 @@ test('duplicate and orphan block anchors fail rather than produce ambiguous refe
   assert.throws(()=>md().render('^orphan'),/no preceding block/);
   assert.match(md().render('`^literal`'),/<code>\^literal<\/code>/);
 });
+
+test('five subject entries are stable despite mixed kind metadata',async()=>{
+  const {topicNotes,formatPages}=await import('../scripts/build.mjs');
+  const ids=['index','reading-route','dependency-graph','route-a','shared-algebra','shared-sat','route-b','outputs'];
+  const map=new Map(ids.map(id=>[id,{id,kind:id==='route-b'?'模块总览':'topic'}]));
+  assert.deepEqual(topicNotes(map,{}).map(n=>n.id),['route-a','shared-algebra','shared-sat','route-b','outputs']);
+  assert.equal(formatPages([53,57,58,59,60,61,62,63,64]),'53、57–64');
+});
