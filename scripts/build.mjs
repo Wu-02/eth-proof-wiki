@@ -69,6 +69,24 @@ export function renderer(notes, base, note) {
     if(silent)return true;const token=state.push('proof_math_block','math',0);token.content=content.trim();token.map=[start,next+1];token.block=true;state.line=next+1;return true;
   },{alt:['paragraph','reference','blockquote','list']});
   md.renderer.rules.proof_math_block=(tokens,i)=>'<div class="math-display">'+mathHtml(tokens[i].content,true)+'</div>\n';
+  const blockIds=new Set();
+  md.block.ruler.before('paragraph','proof_block_id',(state,start,end,silent)=>{
+    const line=state.src.slice(state.bMarks[start]+state.tShift[start],state.eMarks[start]).trim();
+    const match=line.match(/^\^([A-Za-z0-9][A-Za-z0-9-]*)$/);if(!match)return false;
+    if(silent)return true;if(blockIds.has(match[1]))throw new Error(`Duplicate block id ${match[1]} in ${note.id}`);blockIds.add(match[1]);
+    const token=state.push('proof_block_id','span',0);token.content=match[1];token.block=true;token.map=[start,start+1];state.line=start+1;return true;
+  },{alt:['paragraph']});
+  md.core.ruler.after('block','position_block_anchors',state=>{
+    for(let i=0;i<state.tokens.length;i++){
+      const marker=state.tokens[i];if(marker.type!=='proof_block_id')continue;
+      marker.type='proof_block_anchor';let previous=i-1;
+      if(previous<0)throw new Error(`Block id ${marker.content} has no preceding block in ${note.id}`);
+      if(state.tokens[previous].nesting===-1){let balance=-1;while(--previous>=0){balance+=state.tokens[previous].nesting;if(balance===0)break;}}
+      if(previous<0)throw new Error(`Cannot attach block id ${marker.content} in ${note.id}`);
+      state.tokens.splice(i,1);state.tokens.splice(previous,0,marker);
+    }
+  });
+  md.renderer.rules.proof_block_anchor=(tokens,i)=>`<span class="block-anchor" id="${tokens[i].content}" aria-hidden="true"></span>\n`;
   md.inline.ruler.before('image','wikiembed',(state)=>{if(state.src.startsWith('![[',state.pos)) throw new Error(`Obsidian transclusion is not supported yet; use a source-section wikilink instead (${note.id})`);return false;});
   md.inline.ruler.before('link','wikilink',(state,silent)=>{
     if(!state.src.startsWith('[[',state.pos))return false;
@@ -76,7 +94,7 @@ export function renderer(notes, base, note) {
     const raw=state.src.slice(state.pos+2,end), [destination, alias] = raw.split('|');
     const [rawId, heading] = destination.split('#');const id=targetId(rawId || note.id);const dest=notes.get(id);
     if(!dest)throw new Error(`Broken/private wikilink [[${raw}]] in ${note.id}`);
-    if(!silent){const t=state.push('wiki','a',0);t.meta={href:noteUrl(dest,base)+(heading?'#'+slug(heading):''),label:alias||dest.title};note.links.add(id);}
+    if(!silent){const t=state.push('wiki','a',0);t.meta={href:noteUrl(dest,base)+(heading?'#'+(heading.startsWith('^')?heading.slice(1):slug(heading)):''),label:alias||dest.title};note.links.add(id);}
     state.pos=end+2;return true;
   });
   md.renderer.rules.wiki=(tokens,i)=>`<a class="wikilink" href="${escapeHtml(tokens[i].meta.href)}">${escapeHtml(tokens[i].meta.label)}</a>`;

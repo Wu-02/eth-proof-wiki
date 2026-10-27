@@ -36,7 +36,7 @@ test('full builds exclude unpublished/private source and produce both base paths
     await fs.writeFile(path.join(root,'vault/private/hidden.md'),'---\nid: hidden\ntitle: hidden\npublish: true\n---\nDO-NOT-PUBLISH-2');
     await fs.writeFile(path.join(root,'vault/.obsidian/workspace.json'),'DO-NOT-PUBLISH-3');
     await assert.rejects(build({root,output:'vault'}),/dedicated/);await fs.access(path.join(root,'vault/index.md'));
-    const a=await build({root});assert.equal(a.pages,3);const search=await fs.readFile(path.join(root,'public/search.json'),'utf8');assert.doesNotMatch(search,/DO-NOT-PUBLISH/);
+    const a=await build({root,basePath:'/wiki/'});assert.equal(a.pages,3);const search=await fs.readFile(path.join(root,'public/search.json'),'utf8');assert.doesNotMatch(search,/DO-NOT-PUBLISH/);
     assert.equal((await fs.readFile(path.join(root,'public/index.html'),'utf8')).match(/<h1[ >]/g).length,1);
     assert.match(await fs.readFile(path.join(root,'public/index.html'),'utf8'),/href="\/wiki\/reading-route\/"/);
     await assert.rejects(fs.access(path.join(root,'public/private')));await assert.rejects(fs.access(path.join(root,'public/.obsidian')));
@@ -46,3 +46,17 @@ test('full builds exclude unpublished/private source and produce both base paths
 
 test('section/topic source labels are not counted as numbered proof nodes',async()=>{const {isProofNode}=await import('../scripts/build.mjs');assert.ok(isProofNode({id:'D.1'}));assert.ok(isProofNode({id:'4.1'}));assert.equal(isProofNode({id:'route-a',source_label:'第3–6节'}),false);});
 test('unsupported transclusion fails clearly rather than showing a fake embedding',()=>{const a=make('a'),md=renderer(validateNotes([a]),'/',a);assert.throws(()=>md.render('![[a#标题]]'),/transclusion/);assert.match(md.render('`![[a]]`'),/<code>!\[\[a\]\]<\/code>/);});
+
+test('Obsidian block references preserve stable ids and anchor the preceding block',()=>{
+  const a=make('a'),b=make('translation-2');const md=renderer(validateNotes([a,b]),'/wiki/',a);
+  const html=md.render('$$x^2$$\n\n^eq-Foo\n\n[[translation-2#^eq-Foo|式（2.1）]]');
+  assert.match(html,/id="eq-Foo"[\s\S]*class="math-display"/);
+  assert.match(html,/href="\/wiki\/translation-2\/#eq-Foo"/);
+  assert.doesNotMatch(html,/<p>\^eq-Foo/);
+});
+test('duplicate and orphan block anchors fail rather than produce ambiguous references',()=>{
+  const a=make('a');const md=()=>renderer(validateNotes([a]),'/',a);
+  assert.throws(()=>md().render('Text\n\n^same\n\nOther\n\n^same'),/Duplicate block id/);
+  assert.throws(()=>md().render('^orphan'),/no preceding block/);
+  assert.match(md().render('`^literal`'),/<code>\^literal<\/code>/);
+});

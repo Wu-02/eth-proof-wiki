@@ -8,3 +8,4 @@
 @media(max-width:760px){.sidebar{visibility:hidden}body.menu-open .sidebar{visibility:visible}}
 .supporting{border-top:1px solid var(--line);margin-top:25px;padding-top:8px}.supporting h2{font-size:20px;font-weight:550}
 .math-inline{display:inline-block;max-width:100%;overflow-x:auto;overflow-y:hidden;vertical-align:middle;padding:1px 0;line-height:normal}
+.block-anchor{display:block;position:relative;scroll-margin-top:6rem}
