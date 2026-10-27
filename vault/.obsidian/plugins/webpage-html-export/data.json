@@ -11,6 +11,7 @@
     "useFallbackRenderer": true,
     "combineAsSingleFile": false,
     "offlineResources": true,
+    "inlineFonts": true,
     "addPageIcon": false,
     "propertiesOptions": {"enabled": false},
     "tagOptions": {"enabled": false},
