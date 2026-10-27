@@ -1,0 +1,8 @@
+node_modules/
+public/
+public-root/
+.qa/
+*.log
+.DS_Store
+vault/.obsidian/workspace*.json
+vault/.obsidian/cache/
