@@ -1,0 +1,20 @@
+{
+  "exportPreset": "online",
+  "onlyExportModified": false,
+  "deleteOldFiles": false,
+  "openAfterExport": false,
+  "exportOptions": {
+    "exportPath": "/output",
+    "siteName": "ETH 证明 Wiki",
+    "slugifyPaths": false,
+    "relativeHeaderLinks": true,
+    "useFallbackRenderer": true,
+    "combineAsSingleFile": false,
+    "offlineResources": true,
+    "addPageIcon": false,
+    "propertiesOptions": {"enabled": false},
+    "tagOptions": {"enabled": false},
+    "aliasOptions": {"enabled": false},
+    "rssOptions": {"enabled": false}
+  }
+}

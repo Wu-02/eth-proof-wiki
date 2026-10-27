@@ -1,0 +1,77 @@
+name: Export with Obsidian and deploy Pages
+on:
+  push:
+    branches: [main]
+    paths: ['vault/**', '.github/obsidian-*', '.github/workflows/obsidian-pages.yml', 'licenses/**', 'THIRD-PARTY-NOTICES.md']
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: obsidian-pages
+  cancel-in-progress: false
+jobs:
+  export:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    env:
+      EXPORTER_COMMIT: 78c973ddc27eb09bf18e07d143889452bc71ffde
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Get pinned upstream Obsidian export tool
+        uses: actions/checkout@v4
+        with:
+          repository: KosmosisDire/obsidian-webpage-export
+          ref: 78c973ddc27eb09bf18e07d143889452bc71ffde
+          path: .upstream-exporter
+          persist-credentials: false
+      - name: Build upstream container with the real Obsidian app
+        run: |
+          # Debian trixie calls the runtime library libasound2t64.
+          sed -i 's/libasound2 /libasound2t64 /;s/RUN npm install/RUN npm ci/' .upstream-exporter/Dockerfile
+          docker build --build-arg OBSIDIAN_VERSION=1.9.12 -t proof-obsidian-export .upstream-exporter
+      - name: Export the Markdown vault inside Obsidian
+        run: |
+          cp -a vault "$RUNNER_TEMP/obsidian-vault"
+          mkdir -p "$RUNNER_TEMP/obsidian-output"
+          # Preconfigured data.json must not suppress the upstream plugin copy.
+          docker run --rm --shm-size=2g \
+            -e GITHUB_SHA -e EXPORTER_COMMIT -e EXPORT_ENTIRE_VAULT=1 \
+            -v "$RUNNER_TEMP/obsidian-vault:/vault" \
+            -v "$RUNNER_TEMP/obsidian-output:/output" \
+            -v "$GITHUB_WORKSPACE/.github/obsidian-export.mjs:/export-vault.mjs:ro" \
+            proof-obsidian-export bash -c 'mkdir -p /vault/.obsidian/plugins/webpage-html-export; cp /plugin/* /vault/.obsidian/plugins/webpage-html-export/; /run.sh'
+          test -s "$RUNNER_TEMP/obsidian-output/obsidian-export.json"
+          sudo chown -R "$(id -u):$(id -g)" "$RUNNER_TEMP/obsidian-output"
+          mkdir -p "$RUNNER_TEMP/obsidian-output/licenses"
+          cp .upstream-exporter/LICENSE "$RUNNER_TEMP/obsidian-output/licenses/Webpage-HTML-Export-MIT.txt"
+          cp licenses/OpenAI-math-Apache-2.0.txt "$RUNNER_TEMP/obsidian-output/licenses/"
+          cp THIRD-PARTY-NOTICES.md "$RUNNER_TEMP/obsidian-output/licenses/THIRD-PARTY-NOTICES.txt"
+          touch "$RUNNER_TEMP/obsidian-output/.nojekyll"
+      - name: Verify actual Obsidian HTML, formulas and links
+        run: |
+          python -m pip install playwright==1.62.0
+          python -m playwright install --with-deps chromium
+          mkdir -p "$RUNNER_TEMP/preview/eth-proof-wiki"
+          cp -a "$RUNNER_TEMP/obsidian-output/." "$RUNNER_TEMP/preview/eth-proof-wiki/"
+          python -m http.server 4173 --directory "$RUNNER_TEMP/preview" >/tmp/obsidian-preview.log 2>&1 &
+          python .github/obsidian-smoke.py
+        env:
+          EXPORT_DIR: ${{ runner.temp }}/obsidian-output
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: ${{ runner.temp }}/obsidian-output
+  deploy:
+    needs: export
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/configure-pages@v5
+      - uses: actions/deploy-pages@v5
+        id: deploy
