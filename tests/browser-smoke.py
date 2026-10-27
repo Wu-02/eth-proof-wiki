@@ -7,6 +7,7 @@ import shutil
 from pathlib import Path
 from urllib.request import urlopen
 from playwright.sync_api import sync_playwright
+from math_baseline import check_math_baseline
 
 BASE = os.environ.get("PREVIEW_URL", "http://127.0.0.1:4173/eth-proof-wiki/")
 OUT = Path(".qa")
@@ -17,12 +18,14 @@ translations = [n for n in notes if n["id"].startswith("translation-")]
 with sync_playwright() as p:
     args = ["--no-sandbox"] if os.environ.get("CI") or os.environ.get("BROWSER_NO_SANDBOX") else []
     browser = p.chromium.launch(executable_path=os.environ.get("CHROMIUM_PATH") or shutil.which("chromium"), headless=True, args=args)
+    baseline_results = check_math_baseline(browser, BASE)
     page = browser.new_page(viewport={"width": 1440, "height": 1050}, device_scale_factor=1)
     page.on("pageerror", lambda e: errors.append(str(e)))
     page.on("requestfailed", lambda r: failed.append(r.url))
     for note in notes:
         url = BASE + ("" if note["id"] in ["index", "home"] else note["id"] + "/")
         response = page.goto(url, wait_until="load")
+        page.evaluate("document.fonts.ready")
         assert response.status == 200, url
         assert page.locator("h1").count() == 1, url
         assert page.locator("#sidebar .topic-nav").count() == 5, url
@@ -67,8 +70,9 @@ with sync_playwright() as p:
     mobile = browser.new_page(viewport={"width": 390, "height": 844}, device_scale_factor=1)
     mobile.on("pageerror", lambda e: errors.append(str(e)))
     mobile.on("requestfailed", lambda r: failed.append(r.url))
-    for suffix in ["", "D.1/", "6.2/", "dependency-graph/"] + [n["id"] + "/" for n in translations]:
+    for suffix in ["" if n["id"] in ["index", "home"] else n["id"] + "/" for n in notes]:
         mobile.goto(BASE + suffix, wait_until="networkidle")
+        mobile.evaluate("document.fonts.ready")
         assert not mobile.evaluate("document.documentElement.scrollWidth > window.innerWidth"), "mobile " + suffix
         assert not mobile.locator("#sidebar").is_visible()
     mobile.goto(BASE, wait_until="networkidle")
@@ -98,4 +102,4 @@ with sync_playwright() as p:
     assert errors == [], errors
     assert failed == [], failed
     browser.close()
-print(json.dumps({"pages": len(notes), "desktop": "1440x1050", "mobile": "390x844", "pageErrors": errors, "failedRequests": failed, "status": "passed"}, ensure_ascii=False))
+print(json.dumps({"pages": len(notes), "desktop": "1440x1050", "mobile": "390x844", "pageErrors": errors, "failedRequests": failed, "baselineRegression": baseline_results, "status": "passed"}, ensure_ascii=False))
