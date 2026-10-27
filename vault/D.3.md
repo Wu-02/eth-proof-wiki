@@ -1,7 +1,7 @@
 ---
 id: "D.3"
 title: "引理 D.3：张量端口的确定性装包"
-group: "路线B"
+group: "张量缩并"
 kind: "引理"
 status: 完整证明整合稿
 source_label: "D.3"

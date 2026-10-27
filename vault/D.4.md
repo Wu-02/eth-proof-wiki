@@ -1,7 +1,7 @@
 ---
 id: "D.4"
 title: "引理 D.4：Cauchy 变形的二进整性"
-group: "路线B"
+group: "张量缩并"
 kind: "引理"
 status: 完整证明整合稿
 source_label: "D.4"

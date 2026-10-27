@@ -1,7 +1,7 @@
 ---
 id: "D.5"
 title: "引理 D.5：锥形 Hermite 恢复与精度控制"
-group: "路线B"
+group: "张量缩并"
 kind: "引理"
 status: 完整证明整合稿
 source_label: "D.5"

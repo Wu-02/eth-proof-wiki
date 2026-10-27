@@ -1,7 +1,7 @@
 ---
 id: "D.1"
 title: "定理 D.1：布尔张量网络的快速缩并"
-group: "路线B"
+group: "张量缩并"
 kind: "定理"
 status: 完整证明整合稿
 source_label: "D.1"
