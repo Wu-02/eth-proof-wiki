@@ -15,6 +15,9 @@ OUT.mkdir(exist_ok=True)
 errors, failed = [], []
 notes = json.load(urlopen(BASE + "search.json"))
 translations = [n for n in notes if n["id"].startswith("translation-")]
+publication = json.loads(Path("site.config.json").read_text()).get("publishedSourceHashes", {})
+build_info = json.load(urlopen(BASE + "build-info.json"))
+reference_targets = set()
 with sync_playwright() as p:
     args = ["--no-sandbox"] if os.environ.get("CI") or os.environ.get("BROWSER_NO_SANDBOX") else []
     browser = p.chromium.launch(executable_path=os.environ.get("CHROMIUM_PATH") or shutil.which("chromium"), headless=True, args=args)
@@ -33,8 +36,17 @@ with sync_playwright() as p:
         if note["id"].startswith("translation-"):
             assert page.locator(".katex").count() > 0, url
             assert page.locator(".block-anchor").count() > 0, url
+        if note["id"] in publication:
+            assert page.locator('meta[name="source-sha256"]').get_attribute("content") == publication[note["id"]], url
+            assert build_info["sourceHashes"][note["id"]] == publication[note["id"]], url
+            assert page.locator(".prose .katex").count() > 0, url
+            reference_targets.update(page.locator('a[data-reference-fallback]').evaluate_all("es=>es.map(e=>e.href)"))
         assert page.locator(".katex-error").count() == 0, url
         assert not page.evaluate("document.documentElement.scrollWidth > window.innerWidth"), url
+    for href in sorted(reference_targets):
+        page.goto(href, wait_until="load")
+        anchor = page.evaluate("decodeURIComponent(location.hash).slice(1)")
+        assert anchor and page.locator('[id="' + anchor + '"]').count() == 1, href
     page.goto(BASE, wait_until="networkidle")
     page.screenshot(path=str(OUT / "desktop-home.png"), full_page=True)
     page.goto(BASE + "D.1/", wait_until="networkidle")
@@ -102,4 +114,4 @@ with sync_playwright() as p:
     assert errors == [], errors
     assert failed == [], failed
     browser.close()
-print(json.dumps({"pages": len(notes), "desktop": "1440x1050", "mobile": "390x844", "pageErrors": errors, "failedRequests": failed, "baselineRegression": baseline_results, "status": "passed"}, ensure_ascii=False))
+print(json.dumps({"pages": len(notes), "desktop": "1440x1050", "mobile": "390x844", "pageErrors": errors, "failedRequests": failed, "baselineRegression": baseline_results, "pinnedSourcePages": publication, "referenceFallbackTargetsVerified": len(reference_targets), "status": "passed"}, ensure_ascii=False))

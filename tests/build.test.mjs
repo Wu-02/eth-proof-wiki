@@ -81,3 +81,34 @@ test('published proof nodes have separate statement and proof translation links'
   if(!files.includes('translation-1.md'))return;
   for(const file of files){const note=parseNote(await fs.readFile(ROOT+'/vault/'+file,'utf8'),file);if(note&&isProofNode(note))assert.ok((note.body.match(/\[\[translation-[1-6A-D]#\^/g)||[]).length>=2,`${note.id} lacks statement/proof source links`);}
 });
+
+test('frozen publication requires an explicit matching source hash',async()=>{
+  const {createHash}=await import('node:crypto');
+  const text='---\nid: pinned\ntitle: Pinned\npublish: false\n---\nExact reviewed body';
+  const sha=createHash('sha256').update(text).digest('hex');
+  assert.equal(parseNote(text,'pinned.md'),null);
+  assert.equal(parseNote(text,'pinned.md',{pinned:sha}).source_sha256,sha);
+  assert.throws(()=>parseNote(text+'changed','pinned.md',{pinned:sha}),/hash mismatch/);
+  assert.equal(parseNote(text,'pinned.md',{other:sha}),null);
+});
+test('exact reference fallbacks activate only for absent targets and never fabricate anchors',async()=>{
+  const {resolveWikiTarget}=await import('../scripts/build.mjs');
+  const old=make('old'),current=make('new');old.body='Statement\n\n^statement';
+  const fallback={'new#^statement':'old#^statement'};
+  const map=validateNotes([old,current]);
+  assert.deepEqual(resolveWikiTarget(map,'new#^statement',fallback),{destination:'old#^statement',fallback:true});
+  current.body='Statement\n\n^statement';
+  assert.deepEqual(resolveWikiTarget(map,'new#^statement',fallback),{destination:'new#^statement',fallback:false});
+  assert.deepEqual(resolveWikiTarget(map,'new#^unmapped',fallback),{destination:'new#^unmapped',fallback:false});
+  assert.throws(()=>resolveWikiTarget(map,'missing',{'missing':'old#^wrong'}),/Missing explicit reference fallback/);
+  assert.throws(()=>renderer(map,'/',old,fallback).render('[[absent]]'),/Broken\/private wikilink/);
+});
+test('pinned source pages remain byte-identical and contain integrated proof bodies',async()=>{
+  const fs=await import('node:fs/promises');const {ROOT,isProofNode}=await import('../scripts/build.mjs');
+  const config=JSON.parse(await fs.readFile(ROOT+'/site.config.json','utf8'));
+  for(const [id,sha] of Object.entries(config.publishedSourceHashes||{})){
+    const n=parseNote(await fs.readFile(ROOT+'/vault/'+id+'.md','utf8'),id+'.md',config.publishedSourceHashes);
+    assert.equal(n.source_sha256,sha);assert.ok(n.body.length>500);
+    if(isProofNode(n))assert.match(n.body,/\^proof-/);
+  }
+});
