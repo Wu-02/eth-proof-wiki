@@ -35,6 +35,9 @@ def check_math_baseline(browser, base):
     results = []
     for viewport in [{"width":1440,"height":1050}, {"width":390,"height":844}]:
         page = browser.new_page(viewport=viewport)
+        # Match the site's origin before injecting the unpublished test fixture;
+        # an about:blank origin would make same-origin KaTeX fonts fail CORS.
+        page.goto(base, wait_until="networkidle")
         page.set_content(markup, wait_until="networkidle")
         page.evaluate("document.fonts.ready")
         assert page.evaluate("document.fonts.check('15px KaTeX_Main')"), "KaTeX font missing"
