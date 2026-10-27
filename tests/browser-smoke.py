@@ -18,11 +18,19 @@ translations = [n for n in notes if n["id"].startswith("translation-")]
 publication = json.loads(Path("site.config.json").read_text()).get("publishedSourceHashes", {})
 build_info = json.load(urlopen(BASE + "build-info.json"))
 reference_targets = set()
+removed_ids = {"1.2", "1.3", "1.4", "C.1", "C.2", "witness-recovery-sampling", "translation-C"}
+assert not ({n["id"] for n in notes} & removed_ids)
+graph = json.load(urlopen(BASE + "graph.json"))
+assert len(graph["nodes"]) == 28
+assert not ({n["id"] for n in graph["nodes"]} & removed_ids)
 with sync_playwright() as p:
     args = ["--no-sandbox"] if os.environ.get("CI") or os.environ.get("BROWSER_NO_SANDBOX") else []
     browser = p.chromium.launch(executable_path=os.environ.get("CHROMIUM_PATH") or shutil.which("chromium"), headless=True, args=args)
     baseline_results = check_math_baseline(browser, BASE)
     page = browser.new_page(viewport={"width": 1440, "height": 1050}, device_scale_factor=1)
+    for removed in sorted(removed_ids):
+        response = page.goto(BASE + removed + "/", wait_until="load")
+        assert response.status == 404, "Removed route still public: " + removed
     page.on("pageerror", lambda e: errors.append(str(e)))
     page.on("requestfailed", lambda r: failed.append(r.url))
     for note in notes:
@@ -31,6 +39,7 @@ with sync_playwright() as p:
         page.evaluate("document.fonts.ready")
         assert response.status == 200, url
         assert page.locator("h1").count() == 1, url
+        assert page.locator("#sidebar .node-nav").count() == 28, url
         assert page.locator("#sidebar .topic-nav").count() == 5, url
         assert page.locator("#sidebar .translation-nav").count() == len(translations), url
         if note["id"].startswith("translation-"):
@@ -68,7 +77,7 @@ with sync_playwright() as p:
     page.locator("#search-dialog").wait_for(state="hidden")
     assert not page.locator("#search-dialog").is_visible()
     page.goto(BASE + "dependency-graph/", wait_until="networkidle")
-    assert page.locator(".diagram-scroll .node a").count() == 33
+    assert page.locator(".diagram-scroll .node a").count() == 28
     page.locator("#graph-select").select_option("D.1")
     assert page.locator(".is-selected").count() == 1
     assert page.locator(".is-related").count() >= 4
@@ -114,4 +123,4 @@ with sync_playwright() as p:
     assert errors == [], errors
     assert failed == [], failed
     browser.close()
-print(json.dumps({"pages": len(notes), "desktop": "1440x1050", "mobile": "390x844", "pageErrors": errors, "failedRequests": failed, "baselineRegression": baseline_results, "pinnedSourcePages": publication, "referenceFallbackTargetsVerified": len(reference_targets), "status": "passed"}, ensure_ascii=False))
+print(json.dumps({"pages": len(notes), "desktop": "1440x1050", "mobile": "390x844", "pageErrors": errors, "failedRequests": failed, "baselineRegression": baseline_results, "pinnedSourcePages": publication, "referenceFallbackTargetsVerified": len(reference_targets), "deletedRoutesVerified404": sorted(removed_ids), "proofNodes": len(graph["nodes"]), "status": "passed"}, ensure_ascii=False))

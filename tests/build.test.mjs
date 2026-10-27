@@ -12,14 +12,14 @@ test('math is prerendered and never remotely fetched',()=>{const a=make('a'),md=
 test('raw HTML is escaped and heading ids are stable and unique',()=>{const a=make('a'),md=renderer(validateNotes([a]),'/',a);const html=md.render('<script>alert(1)</script>\n\n## 证明思路\n\n## 证明思路');assert.doesNotMatch(html,/<script>/);assert.match(html,/id="证明思路"/);assert.match(html,/id="证明思路-2"/);});
 test('standard Markdown links are rewritten and private targets rejected',()=>{const a=make('a'),b=make('B.1');const md=renderer(validateNotes([a,b]),'/wiki/',a);assert.match(md.render('[节点](B.1.md)'),/href="\/wiki\/B.1\/"/);assert.throws(()=>md.render('[private](private.md)'));});
 
-test('reference diagram preserves all original nodes and maps links into project base',async()=>{
+test('active diagram preserves retained proof nodes and maps links into project base',async()=>{
   const fs=await import('node:fs/promises');const {sourceDiagram,ROOT}=await import('../scripts/build.mjs');
   const svg=await fs.readFile(ROOT+'/web/dependency-reference.svg','utf8');
   const ids=[...svg.matchAll(/<g id="node\d+" class="node">\s*<title>([^<]+)/g)].map(m=>m[1]);
   const map=new Map(ids.map(id=>[id,{id}]));const html=sourceDiagram(svg,map,'/wiki/');
-  assert.equal(ids.length,33);assert.equal((html.match(/class="edge"/g)||[]).length,43);
-  assert.equal((html.match(/target="_top"/g)||[]).length,33);assert.doesNotMatch(html,/xlink:href="https?:/);
-  assert.match(html,/超线性电路下界/);assert.doesNotMatch(html,/非线性规模上界/);
+  assert.equal(ids.length,28);assert.equal((html.match(/class="edge"/g)||[]).length,38);
+  assert.equal((html.match(/target="_top"/g)||[]).length,28);assert.doesNotMatch(html,/xlink:href="https?:/);
+  assert.doesNotMatch(html,/推论|电路下界/);assert.match(html,/<title>1\.1<\/title>/);assert.doesNotMatch(html,/非线性规模上界/);
   assert.throws(()=>sourceDiagram(svg,new Map(),'/wiki/'));
 });
 
@@ -111,4 +111,19 @@ test('pinned source pages remain byte-identical and contain integrated proof bod
     assert.equal(n.source_sha256,sha);assert.ok(n.body.length>500);
     if(isProofNode(n))assert.match(n.body,/\^proof-/);
   }
+});
+
+
+test('derived corollaries are absent from source routes, search and active graph',async()=>{
+  const fs=await import('node:fs/promises');const {ROOT}=await import('../scripts/build.mjs');
+  const removed=['1.2','1.3','1.4','C.1','C.2','witness-recovery-sampling','translation-C'];
+  const files=(await fs.readdir(ROOT+'/vault')).filter(n=>n.endsWith('.md'));
+  const config=JSON.parse(await fs.readFile(ROOT+'/site.config.json','utf8'));
+  for(const id of removed){assert.ok(!files.includes(id+'.md'));assert.ok(!(id in (config.publishedSourceHashes||{})));}
+  for(const file of files){const body=await fs.readFile(ROOT+'/vault/'+file,'utf8');for(const raw of body.matchAll(/\[\[([^\]]+)\]\]/g))assert.ok(!removed.includes(targetId(raw[1])),file+': '+raw[1]);}
+  const source=await fs.readFile(ROOT+'/web/dependency-reference.svg','utf8');
+  for(const id of removed)assert.ok(!source.includes('<title>'+id+'</title>'),id);
+  const intro=await fs.readFile(ROOT+'/vault/translation-1.md','utf8');
+  for(const anchor of ['cor-max-sat-approximation','cor-graph-counting','cor-quantitative-circuits','eq-quantitative-circuit-lower-bound','proof-cor-graph-counting','proof-cor-max-sat-approximation','subsec-related-consequences','subsec-related-counting'])assert.ok(!intro.includes('^'+anchor),anchor);
+  assert.ok(intro.includes('^thm-main'),'Main theorem must remain');
 });

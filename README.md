@@ -59,7 +59,7 @@ depends_on:
 - 保留“证明思路”和“原文中文译文”两层。未译、未审内容如实标记；不要把思路摘要称作全文翻译。
 - `depends_on` 描述逻辑前置；`implementation_options` 单独描述可替换实现，不混入逻辑依赖。`supporting_dependencies` 记录参数、位长等补充支撑；正文链接另行生成普通回链。
 - 新增图片需经过明确审核的资源流程；生成器不会递归复制附件或私人文件夹。
-- `reference/original-dependency.svg` 是原图备份；`web/dependency-reference.svg` 仅校正 C.1 上下界反向标题，构建时把节点指向 Wiki。原图箭头与校核后依赖必须区分。
+- `reference/original-dependency.svg` 保留原图来源档案，不发布到站点；当前 `web/dependency-reference.svg` 只保留主定理及其 28 个证明节点、38 条来源箭头。可由 `dot -Tsvg web/dependency-reference.dot -o web/dependency-reference.svg` 重建，构建时把节点指向 Wiki。来源箭头与校核后依赖分别呈现。
 
 ## 发布 GitHub Pages
 
@@ -81,11 +81,11 @@ depends_on:
 
 ## 来源与许可
 
-原文为 OpenAI《The Exponential Time Hypothesis is False》，[官方来源](https://github.com/openai/math/tree/main/preprints/The-Exponential-Time-Hypothesis-is-False-October-25-2026)。原仓库采用 Apache-2.0，完整许可保留在 `licenses/OpenAI-math-Apache-2.0.txt`。本项目的中文证明导航/后续译文是对原文的改编；用户图仅校正 C.1 标题并增加本地导航链接，不为用户图擅自追加许可。原始作者与改编说明、第三方构建组件许可见 `THIRD-PARTY-NOTICES.md`。
+原文为 OpenAI《The Exponential Time Hypothesis is False》，[官方来源](https://github.com/openai/math/tree/main/preprints/The-Exponential-Time-Hypothesis-is-False-October-25-2026)。原仓库采用 Apache-2.0，完整许可保留在 `licenses/OpenAI-math-Apache-2.0.txt`。本项目的中文证明导航/后续译文是对原文的改编；用户图的在线版本删除主定理后续推论节点、重排布局并增加本地导航链接，不为用户图擅自追加许可。原始作者与改编说明、第三方构建组件许可见 `THIRD-PARTY-NOTICES.md`。
 
 ## 中文译文的单一来源
 
-翻译范围为第 1–6 节、附录 A–D 中**保留的证明内容（含 `Proof` 环境外的定义、陈述与证明说明）**；按约定删除纯历史、展望与参考文献正文。33 个图节点的证明块不等于全部保留内容。以“原文分节译文页”保存保留内容的完整译文，用稳定标题锚点定位各节点。节点的“原文中文译文”层链接到该节相应锚点，不复制另一份证明文本，避免同步漂移。
+当前在线范围为第 1–6 节、附录 A、B、D 中**保留的证明内容（含 `Proof` 环境外的定义、陈述与证明说明）**；按约定删除纯历史、展望与参考文献正文。按用户要求移除主定理后续推论和附录 C；28 个证明节点不等于全部必要内容。以“原文分节译文页”保存保留内容的完整译文，用稳定标题锚点定位各节点。节点的“原文中文译文”层链接到该节相应锚点，不复制另一份证明文本，避免同步漂移。
 
 当前生成器支持 `[[分节页#标题|原文中文译文]]` 链接，以及独立行 `^eq-label` 形式的稳定块锚点与 `[[分节页#^eq-label|式号]]` 引用（大小写保持，重复或失效锚点构建失败），**尚不支持** Obsidian 标题嵌入 `![[分节页#标题]]`；遇嵌入会明确终止构建，不会悄悄当成已经嵌入。若未来增加嵌入，需同时保留原出处导航并增加构建与 Obsidian 一致性的回归测试。
 

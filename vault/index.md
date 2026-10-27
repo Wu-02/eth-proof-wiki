@@ -13,7 +13,7 @@ publish: true
 
 [[translation-1|1 引言]] · [[translation-2|2 技术概述]] · [[translation-3|3 通过共享线性摘要实现的快速计数算法]] · [[translation-4|4 构造低次数替代形式]] · [[translation-5|5 稀疏多项式方程公共零点的计数]] · [[translation-6|6 将#k-SAT归约为公共零点计数]]
 
-[[translation-A|A 划分满足赋值]] · [[translation-B|B 精确算术与空间]] · [[translation-C|C 反驳ETH的进一步推论]] · [[translation-D|D 精确计数的更尖锐界]]
+[[translation-A|A 划分满足赋值]] · [[translation-B|B 精确算术与空间]] · [[translation-D|D 精确计数的更尖锐界]]
 
 ## 要计算什么
 
@@ -47,7 +47,7 @@ $$
 - [[shared-algebra|公共代数工具]]：奇偶性提升、多项式总次数及系数大小。
 - [[shared-sat|SAT 稀疏化与奇偶校验]]：把任意公式的精确计数交给受控规模的计数器。
 - [[route-b|张量缩并路线]]：有限精度恢复、跨组模态与递归成本。
-- [[outputs|主定理与推论]]：计数、近似、图问题、电路下界与局部映射求逆。
+- [[outputs|主定理]]：两档精确计数界与两条证明路线。
 
 完整图见 [[dependency-graph|证明依赖图]]。初次阅读可按 [[reading-route|建议阅读路线]] 选择目标。
 

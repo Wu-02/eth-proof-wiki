@@ -10,16 +10,12 @@
     "outputs"
   ],
   "publishedSourceHashes": {
-    "1.2": "66c33d0040e91f88bc347691c3e0d1cc6ca7a3efa823e5b0e23f8f09d837a858",
-    "1.3": "af8e7af2c578a25f0af5bc1d5af971c0a40d24c6f8c67d2137f616d40ae2e5ae",
     "A.1": "724e1dc917ce118b65417e2ddd7103d4eb5b99e9de38ba96b96492e5f825f2ea",
     "A.2": "be232bbe71140ba51cc1069f34e8d07b9eb8b46ca477d131342327e50f80c7aa",
     "A.3": "f0faee7aab32313991d27b849248de9e8b7dd349263e7bb5db5b4940e97d3dfd",
-    "B.1": "828a00bc61afbc0d54b5825a8072047682acb9a965dc5c3c66e70fdbfcb6181c",
-    "witness-recovery-sampling": "125c15b5f7ea6a7faffdf179fb26757fd7b873863b46ecd881c202f57a6a6ea6"
+    "B.1": "828a00bc61afbc0d54b5825a8072047682acb9a965dc5c3c66e70fdbfcb6181c"
   },
   "referenceFallbacks": {
-    "1.1#^thm-main": "translation-1#^thm-main",
     "6.3#^eq-spar-children": "translation-A#^eq-spar-children",
     "5.1#^lem-rational-idempotent": "translation-5#^lem-rational-idempotent",
     "5.3#^eq-lifted-factor": "translation-5#^eq-lifted-factor",
