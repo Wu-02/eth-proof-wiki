@@ -6,3 +6,5 @@ public-root/
 .DS_Store
 vault/.obsidian/workspace*.json
 vault/.obsidian/cache/
+__pycache__/
+*.pyc

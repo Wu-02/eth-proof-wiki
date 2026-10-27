@@ -13,6 +13,7 @@ OUT = Path(".qa")
 OUT.mkdir(exist_ok=True)
 errors, failed = [], []
 notes = json.load(urlopen(BASE + "search.json"))
+translations = [n for n in notes if n["id"].startswith("translation-")]
 with sync_playwright() as p:
     args = ["--no-sandbox"] if os.environ.get("CI") or os.environ.get("BROWSER_NO_SANDBOX") else []
     browser = p.chromium.launch(executable_path=os.environ.get("CHROMIUM_PATH") or shutil.which("chromium"), headless=True, args=args)
@@ -25,6 +26,10 @@ with sync_playwright() as p:
         assert response.status == 200, url
         assert page.locator("h1").count() == 1, url
         assert page.locator("#sidebar .topic-nav").count() == 5, url
+        assert page.locator("#sidebar .translation-nav").count() == len(translations), url
+        if note["id"].startswith("translation-"):
+            assert page.locator(".katex").count() > 0, url
+            assert page.locator(".block-anchor").count() > 0, url
         assert page.locator(".katex-error").count() == 0, url
         assert not page.evaluate("document.documentElement.scrollWidth > window.innerWidth"), url
     page.goto(BASE, wait_until="networkidle")
@@ -62,7 +67,7 @@ with sync_playwright() as p:
     mobile = browser.new_page(viewport={"width": 390, "height": 844}, device_scale_factor=1)
     mobile.on("pageerror", lambda e: errors.append(str(e)))
     mobile.on("requestfailed", lambda r: failed.append(r.url))
-    for suffix in ["", "D.1/", "6.2/", "dependency-graph/"]:
+    for suffix in ["", "D.1/", "6.2/", "dependency-graph/"] + [n["id"] + "/" for n in translations]:
         mobile.goto(BASE + suffix, wait_until="networkidle")
         assert not mobile.evaluate("document.documentElement.scrollWidth > window.innerWidth"), "mobile " + suffix
         assert not mobile.locator("#sidebar").is_visible()
@@ -77,6 +82,19 @@ with sync_playwright() as p:
     mobile.wait_for_url("**/D.1/")
     assert not mobile.locator("#sidebar").is_visible()
     mobile.screenshot(path=str(OUT / "mobile-proof.png"), full_page=True)
+    if translations:
+        page.goto(BASE, wait_until="networkidle")
+        assert page.locator('.home .prose a[href*="/translation-"]').count() == len(translations)
+        page.goto(BASE + "D.1/", wait_until="networkidle")
+        links = page.locator('.prose a[href*="translation-D/"]')
+        assert links.count() >= 2, "D.1 needs both statement and proof locations"
+        links.first.click()
+        page.wait_for_url("**/translation-D/**")
+        anchor = page.evaluate("decodeURIComponent(location.hash).slice(1)")
+        assert anchor and page.locator('[id="' + anchor + '"]').count() == 1
+        page.screenshot(path=str(OUT / "desktop-translation.png"), full_page=False)
+        mobile.goto(BASE + "translation-D/", wait_until="networkidle")
+        mobile.screenshot(path=str(OUT / "mobile-translation.png"), full_page=False)
     assert errors == [], errors
     assert failed == [], failed
     browser.close()

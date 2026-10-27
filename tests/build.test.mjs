@@ -68,3 +68,16 @@ test('five subject entries are stable despite mixed kind metadata',async()=>{
   assert.deepEqual(topicNotes(map,{}).map(n=>n.id),['route-a','shared-algebra','shared-sat','route-b','outputs']);
   assert.equal(formatPages([53,57,58,59,60,61,62,63,64]),'53、57–64');
 });
+
+test('reader templates contain navigation rather than workflow/status boilerplate',async()=>{
+  const fs=await import('node:fs/promises');const {ROOT}=await import('../scripts/build.mjs');
+  const source=await fs.readFile(ROOT+'/scripts/build.mjs','utf8');
+  for(const phrase of ['第一阶段 ·','<div class="notice">','<span class="status">','同一份 Markdown','最后逐段译审','Markdown 是唯一内容源'])assert.ok(!source.includes(phrase),phrase);
+});
+
+test('published proof nodes have separate statement and proof translation links',async()=>{
+  const fs=await import('node:fs/promises');const {ROOT,isProofNode}=await import('../scripts/build.mjs');
+  const files=(await fs.readdir(ROOT+'/vault')).filter(n=>n.endsWith('.md'));
+  if(!files.includes('translation-1.md'))return;
+  for(const file of files){const note=parseNote(await fs.readFile(ROOT+'/vault/'+file,'utf8'),file);if(note&&isProofNode(note))assert.ok((note.body.match(/\[\[translation-[1-6A-D]#\^/g)||[]).length>=2,`${note.id} lacks statement/proof source links`);}
+});

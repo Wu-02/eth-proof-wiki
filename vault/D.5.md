@@ -36,3 +36,8 @@ $$p_t=p+8hD_t+8M(a+1)$$
 ## 依赖用途与下游
 
 引理本身是带整性假设的独立恢复结果；[[D.4|引理 D.4]] 在 [[D.1|定理 D.1]] 的具体应用中验证假设，而不是本抽象引理的证明前提。随后的 D.4.4 参数分析把工作精度化成 $p_t=O(MD_t/u)$，正是 D.4.5 将模态数降至 $\exp(O(M/\sqrt u))$ 的接口。均匀重数会损失 $\Theta(MD_t)$，无法解释所需的 $1/u$ 改善。
+
+## 中文译文
+
+- [[translation-D#^lem-tapered-hermite|陈述]]
+- [[translation-D#^proof-lem-tapered-hermite|证明]]

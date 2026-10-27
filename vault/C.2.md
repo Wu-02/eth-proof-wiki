@@ -40,3 +40,8 @@ $$
 ## 依赖用途与下游
 
 计数和求逆的直接依赖只有定理1.1及通常的自归约。原文另提到按条件计数可精确均匀抽样原像，其期望开销多项式，援引外部 JVV 结果。对于多项式多个输出，结论排除这类常数局部映射的 $2^{\Omega(n)}$ 求逆困难性，**并不排除相对多项式时间算法的单向性**。
+
+## 中文译文
+
+- [[translation-C#^cor-consequence-local-inversion|陈述]]
+- [[translation-C#^proof-cor-consequence-local-inversion|证明]]
