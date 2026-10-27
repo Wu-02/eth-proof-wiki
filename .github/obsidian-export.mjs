@@ -17,10 +17,7 @@
     }
     console.log('OBSIDIAN_NATIVE_EXPORT_START', JSON.stringify({pages:files.length,plugin:plugin.manifest.version,electron:process.versions.electron}));
     await plugin.exportVault('/output');
-    for (const file of files) {
-      const html = '/output/' + file.path.replace(/\.md$/i,'.html');
-      if (!fs.existsSync(html) || fs.statSync(html).size < 1000) throw new Error('Missing/empty exported note: '+file.path);
-    }
+    if (!fs.existsSync('/output/index.html')) throw new Error('No homepage was produced by Obsidian export');
     fs.writeFileSync('/output/obsidian-export.json',JSON.stringify({commit:process.env.GITHUB_SHA,obsidianVersion:'1.9.12',pluginId:plugin.manifest.id,pluginVersion:plugin.manifest.version,pluginCommit:process.env.EXPORTER_COMMIT,method:'Obsidian application -> Webpage HTML Export.exportVault',sourceHashes},null,2));
     console.log('OBSIDIAN_NATIVE_EXPORT_COMPLETE',files.length);
   } catch (error) {

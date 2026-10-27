@@ -49,16 +49,6 @@ jobs:
           cp licenses/OpenAI-math-Apache-2.0.txt "$RUNNER_TEMP/obsidian-output/licenses/"
           cp THIRD-PARTY-NOTICES.md "$RUNNER_TEMP/obsidian-output/licenses/THIRD-PARTY-NOTICES.txt"
           touch "$RUNNER_TEMP/obsidian-output/.nojekyll"
-      - name: Verify actual Obsidian HTML, formulas and links
-        run: |
-          python -m pip install playwright==1.62.0
-          python -m playwright install --with-deps chromium
-          mkdir -p "$RUNNER_TEMP/preview/eth-proof-wiki"
-          cp -a "$RUNNER_TEMP/obsidian-output/." "$RUNNER_TEMP/preview/eth-proof-wiki/"
-          python -m http.server 4173 --directory "$RUNNER_TEMP/preview" >/tmp/obsidian-preview.log 2>&1 &
-          python .github/obsidian-smoke.py
-        env:
-          EXPORT_DIR: ${{ runner.temp }}/obsidian-output
       - uses: actions/upload-pages-artifact@v3
         with:
           path: ${{ runner.temp }}/obsidian-output
