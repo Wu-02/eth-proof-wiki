@@ -32,20 +32,20 @@
 <!-- 5.1 -->
 <g id="node1" class="node">
 <title>5.1</title>
-<g id="a_node1"><a xlink:href="../5.1.html" xlink:title="5.1 引理\n2^ℓ 模偶性指示多项式">
+<g id="a_node1"><a xlink:href="../5.1.html" xlink:title="5.1 引理\n奇偶示性多项式">
 <path fill="#f7f2ff" stroke="#728071" d="M254,-57.82C254,-57.82 164,-57.82 164,-57.82 158,-57.82 152,-51.82 152,-45.82 152,-45.82 152,-33.82 152,-33.82 152,-27.82 158,-21.82 164,-21.82 164,-21.82 254,-21.82 254,-21.82 260,-21.82 266,-27.82 266,-33.82 266,-33.82 266,-45.82 266,-45.82 266,-51.82 260,-57.82 254,-57.82"/>
 <text text-anchor="middle" x="209" y="-42.82" font-family="Noto Sans CJK SC" font-size="10.00">5.1 引理</text>
-<text text-anchor="middle" x="209" y="-31.82" font-family="Noto Sans CJK SC" font-size="10.00">2^ℓ 模偶性指示多项式</text>
+<text text-anchor="middle" x="209" y="-31.82" font-family="Noto Sans CJK SC" font-size="10.00">奇偶示性多项式</text>
 </a>
 </g>
 </g>
 <!-- 5.2 -->
 <g id="node2" class="node">
 <title>5.2</title>
-<g id="a_node2"><a xlink:href="../5.2.html" xlink:title="5.2 引理\n截断乘积总次数控制">
+<g id="a_node2"><a xlink:href="../5.2.html" xlink:title="5.2 引理\n截断乘积并控制总次数">
 <path fill="#f7f2ff" stroke="#728071" d="M395,-57.82C395,-57.82 313,-57.82 313,-57.82 307,-57.82 301,-51.82 301,-45.82 301,-45.82 301,-33.82 301,-33.82 301,-27.82 307,-21.82 313,-21.82 313,-21.82 395,-21.82 395,-21.82 401,-21.82 407,-27.82 407,-33.82 407,-33.82 407,-45.82 407,-45.82 407,-51.82 401,-57.82 395,-57.82"/>
 <text text-anchor="middle" x="354" y="-42.82" font-family="Noto Sans CJK SC" font-size="10.00">5.2 引理</text>
-<text text-anchor="middle" x="354" y="-31.82" font-family="Noto Sans CJK SC" font-size="10.00">截断乘积总次数控制</text>
+<text text-anchor="middle" x="354" y="-31.82" font-family="Noto Sans CJK SC" font-size="10.00">截断乘积并控制次数</text>
 </a>
 </g>
 </g>
@@ -58,10 +58,10 @@
 <!-- D.2 -->
 <g id="node11" class="node">
 <title>D.2</title>
-<g id="a_node11"><a xlink:href="../D.2.html" xlink:title="D.2 引理\n张量法稀疏共零计数">
+<g id="a_node11"><a xlink:href="../D.2.html" xlink:title="D.2 引理\n用张量缩并计算稀疏多项式方程组的公共零点数">
 <path fill="#edf5ff" stroke="#728071" d="M540,-155.82C540,-155.82 458,-155.82 458,-155.82 452,-155.82 446,-149.82 446,-143.82 446,-143.82 446,-131.82 446,-131.82 446,-125.82 452,-119.82 458,-119.82 458,-119.82 540,-119.82 540,-119.82 546,-119.82 552,-125.82 552,-131.82 552,-131.82 552,-143.82 552,-143.82 552,-149.82 546,-155.82 540,-155.82"/>
 <text text-anchor="middle" x="499" y="-140.82" font-family="Noto Sans CJK SC" font-size="10.00">D.2 引理</text>
-<text text-anchor="middle" x="499" y="-129.82" font-family="Noto Sans CJK SC" font-size="10.00">张量法稀疏共零计数</text>
+<text text-anchor="middle" x="499" y="-129.82" font-family="Noto Sans CJK SC" font-size="10.00">稀疏方程组的零点数</text>
 </a>
 </g>
 </g>
@@ -80,10 +80,10 @@
 <!-- B.1 -->
 <g id="node3" class="node">
 <title>B.1</title>
-<g id="a_node3"><a xlink:href="../B.1.html" xlink:title="B.1 引理\n整数提升系数高度界">
+<g id="a_node3"><a xlink:href="../B.1.html" xlink:title="B.1 引理\n按 h 的幂展开后的整数系数上界">
 <path fill="#f7f2ff" stroke="#728071" d="M110,-57.82C110,-57.82 28,-57.82 28,-57.82 22,-57.82 16,-51.82 16,-45.82 16,-45.82 16,-33.82 16,-33.82 16,-27.82 22,-21.82 28,-21.82 28,-21.82 110,-21.82 110,-21.82 116,-21.82 122,-27.82 122,-33.82 122,-33.82 122,-45.82 122,-45.82 122,-51.82 116,-57.82 110,-57.82"/>
 <text text-anchor="middle" x="69" y="-42.82" font-family="Noto Sans CJK SC" font-size="10.00">B.1 引理</text>
-<text text-anchor="middle" x="69" y="-31.82" font-family="Noto Sans CJK SC" font-size="10.00">整数提升系数高度界</text>
+<text text-anchor="middle" x="69" y="-31.82" font-family="Noto Sans CJK SC" font-size="10.00">展开后的整数系数</text>
 </a>
 </g>
 </g>
@@ -96,20 +96,20 @@
 <!-- 6.1 -->
 <g id="node4" class="node">
 <title>6.1</title>
-<g id="a_node4"><a xlink:href="../6.1.html" xlink:title="6.1 引理\n稀疏初始奇偶校验">
+<g id="a_node4"><a xlink:href="../6.1.html" xlink:title="6.1 引理\n稀疏初始校验矩阵">
 <path fill="#fff8ec" stroke="#728071" d="M245.5,-290.82C245.5,-290.82 172.5,-290.82 172.5,-290.82 166.5,-290.82 160.5,-284.82 160.5,-278.82 160.5,-278.82 160.5,-266.82 160.5,-266.82 160.5,-260.82 166.5,-254.82 172.5,-254.82 172.5,-254.82 245.5,-254.82 245.5,-254.82 251.5,-254.82 257.5,-260.82 257.5,-266.82 257.5,-266.82 257.5,-278.82 257.5,-278.82 257.5,-284.82 251.5,-290.82 245.5,-290.82"/>
 <text text-anchor="middle" x="209" y="-275.82" font-family="Noto Sans CJK SC" font-size="10.00">6.1 引理</text>
-<text text-anchor="middle" x="209" y="-264.82" font-family="Noto Sans CJK SC" font-size="10.00">稀疏初始奇偶校验</text>
+<text text-anchor="middle" x="209" y="-264.82" font-family="Noto Sans CJK SC" font-size="10.00">稀疏初始校验矩阵</text>
 </a>
 </g>
 </g>
 <!-- 6.2 -->
 <g id="node5" class="node">
 <title>6.2</title>
-<g id="a_node5"><a xlink:href="../6.2.html" xlink:title="6.2 引理\n贪心添加校验行">
+<g id="a_node5"><a xlink:href="../6.2.html" xlink:title="6.2 引理\n通过公共零点计数贪心选择校验行">
 <path fill="#fff8ec" stroke="#728071" d="M385.5,-307.82C385.5,-307.82 322.5,-307.82 322.5,-307.82 316.5,-307.82 310.5,-301.82 310.5,-295.82 310.5,-295.82 310.5,-283.82 310.5,-283.82 310.5,-277.82 316.5,-271.82 322.5,-271.82 322.5,-271.82 385.5,-271.82 385.5,-271.82 391.5,-271.82 397.5,-277.82 397.5,-283.82 397.5,-283.82 397.5,-295.82 397.5,-295.82 397.5,-301.82 391.5,-307.82 385.5,-307.82"/>
 <text text-anchor="middle" x="354" y="-292.82" font-family="Noto Sans CJK SC" font-size="10.00">6.2 引理</text>
-<text text-anchor="middle" x="354" y="-281.82" font-family="Noto Sans CJK SC" font-size="10.00">贪心添加校验行</text>
+<text text-anchor="middle" x="354" y="-281.82" font-family="Noto Sans CJK SC" font-size="10.00">贪心选择校验行</text>
 </a>
 </g>
 </g>
@@ -144,10 +144,10 @@
 <!-- 6.3 -->
 <g id="node6" class="node">
 <title>6.3</title>
-<g id="a_node6"><a xlink:href="../6.3.html" xlink:title="6.3 引理\n计数保持的 #SAT 稀疏化">
+<g id="a_node6"><a xlink:href="../6.3.html" xlink:title="6.3 引理\n保持变量集合与计数的不交稀疏化">
 <path fill="#fff8ec" stroke="#728071" d="M549,-340.82C549,-340.82 449,-340.82 449,-340.82 443,-340.82 437,-334.82 437,-328.82 437,-328.82 437,-316.82 437,-316.82 437,-310.82 443,-304.82 449,-304.82 449,-304.82 549,-304.82 549,-304.82 555,-304.82 561,-310.82 561,-316.82 561,-316.82 561,-328.82 561,-328.82 561,-334.82 555,-340.82 549,-340.82"/>
 <text text-anchor="middle" x="499" y="-325.82" font-family="Noto Sans CJK SC" font-size="10.00">6.3 引理</text>
-<text text-anchor="middle" x="499" y="-314.82" font-family="Noto Sans CJK SC" font-size="10.00">计数保持的 #SAT 稀疏化</text>
+<text text-anchor="middle" x="499" y="-314.82" font-family="Noto Sans CJK SC" font-size="10.00">保持计数的不交稀疏化</text>
 </a>
 </g>
 </g>
@@ -176,10 +176,10 @@
 <!-- A.3 -->
 <g id="node9" class="node">
 <title>A.3</title>
-<g id="a_node9"><a xlink:href="../A.3.html" xlink:title="A.3 引理\n沿路径的子句插入界">
+<g id="a_node9"><a xlink:href="../A.3.html" xlink:title="A.3 引理\n沿路径的累计插入次数上界">
 <path fill="#fff8ec" stroke="#728071" d="M395,-373.82C395,-373.82 313,-373.82 313,-373.82 307,-373.82 301,-367.82 301,-361.82 301,-361.82 301,-349.82 301,-349.82 301,-343.82 307,-337.82 313,-337.82 313,-337.82 395,-337.82 395,-337.82 401,-337.82 407,-343.82 407,-349.82 407,-349.82 407,-361.82 407,-361.82 407,-367.82 401,-373.82 395,-373.82"/>
 <text text-anchor="middle" x="354" y="-358.82" font-family="Noto Sans CJK SC" font-size="10.00">A.3 引理</text>
-<text text-anchor="middle" x="354" y="-347.82" font-family="Noto Sans CJK SC" font-size="10.00">沿路径的子句插入界</text>
+<text text-anchor="middle" x="354" y="-347.82" font-family="Noto Sans CJK SC" font-size="10.00">累计插入次数上界</text>
 </a>
 </g>
 </g>
@@ -192,10 +192,10 @@
 <!-- A.2 -->
 <g id="node8" class="node">
 <title>A.2</title>
-<g id="a_node8"><a xlink:href="../A.2.html" xlink:title="A.2 引理\n已标记子句局部度界">
+<g id="a_node8"><a xlink:href="../A.2.html" xlink:title="A.2 引理\n已标记子句的局部度界">
 <path fill="#fff8ec" stroke="#728071" d="M250,-390.82C250,-390.82 168,-390.82 168,-390.82 162,-390.82 156,-384.82 156,-378.82 156,-378.82 156,-366.82 156,-366.82 156,-360.82 162,-354.82 168,-354.82 168,-354.82 250,-354.82 250,-354.82 256,-354.82 262,-360.82 262,-366.82 262,-366.82 262,-378.82 262,-378.82 262,-384.82 256,-390.82 250,-390.82"/>
 <text text-anchor="middle" x="209" y="-375.82" font-family="Noto Sans CJK SC" font-size="10.00">A.2 引理</text>
-<text text-anchor="middle" x="209" y="-364.82" font-family="Noto Sans CJK SC" font-size="10.00">已标记子句局部度界</text>
+<text text-anchor="middle" x="209" y="-364.82" font-family="Noto Sans CJK SC" font-size="10.00">已标记子句的局部度界</text>
 </a>
 </g>
 </g>
@@ -214,10 +214,10 @@
 <!-- D.1 -->
 <g id="node10" class="node">
 <title>D.1</title>
-<g id="a_node10"><a xlink:href="../D.1.html" xlink:title="D.1 定理\n布尔张量网络快速收缩">
+<g id="a_node10"><a xlink:href="../D.1.html" xlink:title="D.1 定理\n布尔张量网络的快速缩并">
 <path fill="#edf5ff" stroke="#728071" d="M400,-171.82C400,-171.82 308,-171.82 308,-171.82 302,-171.82 296,-165.82 296,-159.82 296,-159.82 296,-147.82 296,-147.82 296,-141.82 302,-135.82 308,-135.82 308,-135.82 400,-135.82 400,-135.82 406,-135.82 412,-141.82 412,-147.82 412,-147.82 412,-159.82 412,-159.82 412,-165.82 406,-171.82 400,-171.82"/>
 <text text-anchor="middle" x="354" y="-156.82" font-family="Noto Sans CJK SC" font-size="10.00">D.1 定理</text>
-<text text-anchor="middle" x="354" y="-145.82" font-family="Noto Sans CJK SC" font-size="10.00">布尔张量网络快速收缩</text>
+<text text-anchor="middle" x="354" y="-145.82" font-family="Noto Sans CJK SC" font-size="10.00">布尔张量网络的缩并</text>
 </a>
 </g>
 </g>
@@ -242,10 +242,10 @@
 <!-- D.3 -->
 <g id="node12" class="node">
 <title>D.3</title>
-<g id="a_node12"><a xlink:href="../D.3.html" xlink:title="D.3 引理\n张量端口分包">
+<g id="a_node12"><a xlink:href="../D.3.html" xlink:title="D.3 引理\n图的边分组">
 <path fill="#edf5ff" stroke="#728071" d="M95.5,-187.82C95.5,-187.82 42.5,-187.82 42.5,-187.82 36.5,-187.82 30.5,-181.82 30.5,-175.82 30.5,-175.82 30.5,-163.82 30.5,-163.82 30.5,-157.82 36.5,-151.82 42.5,-151.82 42.5,-151.82 95.5,-151.82 95.5,-151.82 101.5,-151.82 107.5,-157.82 107.5,-163.82 107.5,-163.82 107.5,-175.82 107.5,-175.82 107.5,-181.82 101.5,-187.82 95.5,-187.82"/>
 <text text-anchor="middle" x="69" y="-172.82" font-family="Noto Sans CJK SC" font-size="10.00">D.3 引理</text>
-<text text-anchor="middle" x="69" y="-161.82" font-family="Noto Sans CJK SC" font-size="10.00">张量端口分包</text>
+<text text-anchor="middle" x="69" y="-161.82" font-family="Noto Sans CJK SC" font-size="10.00">图的边分组</text>
 </a>
 </g>
 </g>
@@ -258,10 +258,10 @@
 <!-- D.4 -->
 <g id="node13" class="node">
 <title>D.4</title>
-<g id="a_node13"><a xlink:href="../D.4.html" xlink:title="D.4 引理\nCauchy 形变的二进整性">
+<g id="a_node13"><a xlink:href="../D.4.html" xlink:title="D.4 引理\nCauchy 变形的二进整性">
 <path fill="#edf5ff" stroke="#728071" d="M259,-204.82C259,-204.82 159,-204.82 159,-204.82 153,-204.82 147,-198.82 147,-192.82 147,-192.82 147,-180.82 147,-180.82 147,-174.82 153,-168.82 159,-168.82 159,-168.82 259,-168.82 259,-168.82 265,-168.82 271,-174.82 271,-180.82 271,-180.82 271,-192.82 271,-192.82 271,-198.82 265,-204.82 259,-204.82"/>
 <text text-anchor="middle" x="209" y="-189.82" font-family="Noto Sans CJK SC" font-size="10.00">D.4 引理</text>
-<text text-anchor="middle" x="209" y="-178.82" font-family="Noto Sans CJK SC" font-size="10.00">Cauchy 形变的二进整性</text>
+<text text-anchor="middle" x="209" y="-178.82" font-family="Noto Sans CJK SC" font-size="10.00">Cauchy 变形的二进整性</text>
 </a>
 </g>
 </g>
@@ -280,10 +280,10 @@
 <!-- D.5 -->
 <g id="node14" class="node">
 <title>D.5</title>
-<g id="a_node14"><a xlink:href="../D.5.html" xlink:title="D.5 引理\n锥形 Hermite 插值恢复">
+<g id="a_node14"><a xlink:href="../D.5.html" xlink:title="D.5 引理\nHermite 插值恢复与精度控制">
 <path fill="#edf5ff" stroke="#728071" d="M256.5,-138.82C256.5,-138.82 161.5,-138.82 161.5,-138.82 155.5,-138.82 149.5,-132.82 149.5,-126.82 149.5,-126.82 149.5,-114.82 149.5,-114.82 149.5,-108.82 155.5,-102.82 161.5,-102.82 161.5,-102.82 256.5,-102.82 256.5,-102.82 262.5,-102.82 268.5,-108.82 268.5,-114.82 268.5,-114.82 268.5,-126.82 268.5,-126.82 268.5,-132.82 262.5,-138.82 256.5,-138.82"/>
 <text text-anchor="middle" x="209" y="-123.82" font-family="Noto Sans CJK SC" font-size="10.00">D.5 引理</text>
-<text text-anchor="middle" x="209" y="-112.82" font-family="Noto Sans CJK SC" font-size="10.00">锥形 Hermite 插值恢复</text>
+<text text-anchor="middle" x="209" y="-112.82" font-family="Noto Sans CJK SC" font-size="10.00">Hermite 插值恢复</text>
 </a>
 </g>
 </g>
