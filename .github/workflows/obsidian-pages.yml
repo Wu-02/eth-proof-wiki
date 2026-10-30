@@ -2,7 +2,7 @@ name: Export with Obsidian and deploy Pages
 on:
   push:
     branches: [main]
-    paths: ['vault/**', '.github/obsidian-*', '.github/workflows/obsidian-pages.yml', 'licenses/**', 'THIRD-PARTY-NOTICES.md']
+    paths: ['vault/**', '.github/obsidian-*', '.github/fix-navigation-titles.mjs', '.github/workflows/obsidian-pages.yml', 'licenses/**', 'THIRD-PARTY-NOTICES.md']
   workflow_dispatch:
 permissions:
   contents: read
