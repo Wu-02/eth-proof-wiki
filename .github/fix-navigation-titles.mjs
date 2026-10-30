@@ -14,14 +14,15 @@ for (const filename of fs.readdirSync(vault).filter(name => name.endsWith('.md')
   if (!heading) throw new Error(`Missing H1: ${filename}`);
   const id = path.basename(filename, '.md');
   headings[id] = heading;
-  const frontmatter = markdown.match(/^---\\r?\\n([\\s\\S]*?)\\r?\\n---/);
-  const title = frontmatter?.[1].match(/^title:\\s*(.+)$/m)?.[1]?.trim().replace(/^["']|["']$/g, '');
+  const frontmatter = markdown.match(/^---\r?\n([\s\\S]*?)\r?\n---/);
+  const title = frontmatter?.[1].match(/^title:\s*(.+)$/m)?.[1]?.trim().replace(/^["']|["']$/g, '');
   previousTitles[id] = title ?? id;
 }
 
 const client = `<script data-proof-wiki-navigation-titles>
 (() => {
   const titles = ${JSON.stringify(headings)};
+  const oldTitles = ${JSON.stringify(previousTitles)};
   const update = () => {
     for (const link of document.querySelectorAll('a[href]')) {
       // Only change file-tree navigation, not article cross-references or the TOC.
