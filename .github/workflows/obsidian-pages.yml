@@ -49,6 +49,8 @@ jobs:
           cp licenses/OpenAI-math-Apache-2.0.txt "$RUNNER_TEMP/obsidian-output/licenses/"
           cp THIRD-PARTY-NOTICES.md "$RUNNER_TEMP/obsidian-output/licenses/THIRD-PARTY-NOTICES.txt"
           touch "$RUNNER_TEMP/obsidian-output/.nojekyll"
+      - name: Align exported navigation labels with note headings
+        run: node .github/fix-navigation-titles.mjs vault "$RUNNER_TEMP/obsidian-output"
       - uses: actions/upload-pages-artifact@v3
         with:
           path: ${{ runner.temp }}/obsidian-output
