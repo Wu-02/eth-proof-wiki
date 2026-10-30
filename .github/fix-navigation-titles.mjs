@@ -7,11 +7,16 @@ const vault = path.resolve(process.argv[2] ?? 'vault');
 const output = path.resolve(process.argv[3] ?? '/output');
 
 const headings = {};
+const previousTitles = {};
 for (const filename of fs.readdirSync(vault).filter(name => name.endsWith('.md'))) {
   const markdown = fs.readFileSync(path.join(vault, filename), 'utf8');
   const heading = markdown.match(/^# (.+)$/m)?.[1]?.trim();
   if (!heading) throw new Error(`Missing H1: ${filename}`);
-  headings[path.basename(filename, '.md')] = heading;
+  const id = path.basename(filename, '.md');
+  headings[id] = heading;
+  const frontmatter = markdown.match(/^---\\r?\\n([\\s\\S]*?)\\r?\\n---/);
+  const title = frontmatter?.[1].match(/^title:\\s*(.+)$/m)?.[1]?.trim().replace(/^["']|["']$/g, '');
+  previousTitles[id] = title ?? id;
 }
 
 const client = `<script data-proof-wiki-navigation-titles>
@@ -27,7 +32,7 @@ const client = `<script data-proof-wiki-navigation-titles>
       const id = decodeURIComponent(url.pathname.split('/').pop().slice(0, -5));
       if (!Object.prototype.hasOwnProperty.call(titles, id)) continue;
       const label = link.querySelector('.tree-item-inner, .nav-file-title-content, .tree-item-title') ?? link;
-      if (label.textContent.trim() === id) {
+      if ([id, oldTitles[id]].includes(label.textContent.trim())) {
         label.textContent = titles[id];
         link.setAttribute('title', titles[id]);
       }
