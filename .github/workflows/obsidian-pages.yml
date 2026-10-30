@@ -2,7 +2,7 @@ name: Export with Obsidian and deploy Pages
 on:
   push:
     branches: [main]
-    paths: ['vault/**', '.github/obsidian-*', '.github/fix-navigation-titles.mjs', '.github/workflows/obsidian-pages.yml', 'licenses/**', 'THIRD-PARTY-NOTICES.md']
+    paths: ['vault/**', '.github/obsidian-*', 'tests/navigation-titles.test.mjs', '.github/workflows/obsidian-pages.yml', 'licenses/**', 'THIRD-PARTY-NOTICES.md']
   workflow_dispatch:
 permissions:
   contents: read
@@ -19,6 +19,8 @@ jobs:
       - uses: actions/checkout@v4
         with:
           persist-credentials: false
+      - name: Check navigation title metadata
+        run: node --test tests/navigation-titles.test.mjs
       - name: Get pinned upstream Obsidian export tool
         uses: actions/checkout@v4
         with:
@@ -49,8 +51,6 @@ jobs:
           cp licenses/OpenAI-math-Apache-2.0.txt "$RUNNER_TEMP/obsidian-output/licenses/"
           cp THIRD-PARTY-NOTICES.md "$RUNNER_TEMP/obsidian-output/licenses/THIRD-PARTY-NOTICES.txt"
           touch "$RUNNER_TEMP/obsidian-output/.nojekyll"
-      - name: Align exported navigation labels with note headings
-        run: node .github/fix-navigation-titles.mjs vault "$RUNNER_TEMP/obsidian-output"
       - uses: actions/upload-pages-artifact@v3
         with:
           path: ${{ runner.temp }}/obsidian-output
