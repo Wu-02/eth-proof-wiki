@@ -14,7 +14,7 @@ for (const filename of fs.readdirSync(vault).filter(name => name.endsWith('.md')
   if (!heading) throw new Error(`Missing H1: ${filename}`);
   const id = path.basename(filename, '.md');
   headings[id] = heading;
-  const frontmatter = markdown.match(/^---\r?\n([\s\\S]*?)\r?\n---/);
+  const frontmatter = markdown.match(/^---\r?\n([\s\S]*?)\r?\n---/);
   const title = frontmatter?.[1].match(/^title:\s*(.+)$/m)?.[1]?.trim().replace(/^["']|["']$/g, '');
   previousTitles[id] = title ?? id;
 }
@@ -54,22 +54,20 @@ const client = `<script data-proof-wiki-navigation-titles>
 })();
 </script>`;
 
+// The exporter also emits HTML fragments under site-lib/html. Those are not
+// documents and intentionally have no <body>. Only root-level exported notes
+// should receive the navigation script.
 let count = 0;
-function visit(dir) {
-  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
-    const target = path.join(dir, entry.name);
-    if (entry.isDirectory()) visit(target);
-    else if (entry.name.endsWith('.html')) {
-      let html = fs.readFileSync(target, 'utf8');
-      if (html.includes('data-proof-wiki-navigation-titles')) continue;
-      if (!/<\/body\s*>/i.test(html)) throw new Error(`Missing closing body: ${target}`);
-      html = html.replace(/<\/body\s*>/i, `${client}</body>`);
-      fs.writeFileSync(target, html);
-      count++;
-    }
-  }
+for (const id of Object.keys(headings)) {
+  const target = path.join(output, id + '.html');
+  if (!fs.existsSync(target)) throw new Error(`Export missing note: ${id}.html`);
+  let html = fs.readFileSync(target, 'utf8');
+  if (html.includes('data-proof-wiki-navigation-titles')) continue;
+  if (!/<\\/body\\s*>/i.test(html)) throw new Error(`Missing closing body in note: ${target}`);
+  html = html.replace(/<\\/body\\s*>/i, `${client}</body>`);
+  fs.writeFileSync(target, html);
+  count++;
 }
-visit(output);
 if (!count) throw new Error('No HTML files updated');
 for (const id of Object.keys(headings)) {
   if (!fs.existsSync(path.join(output, id + '.html'))) {
